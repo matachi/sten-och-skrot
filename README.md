@@ -27,7 +27,7 @@ to compile my project.
 ### Box2D
 
  * [Box2D 2.1.2](http://code.google.com/p/box2d/downloads/detail?name=Box2D_v2.1.2.zip&can=2&q=)
- * [My own problems compiling and running Box2D](http://www.box2d.org/forum/viewtopic.php?f=7&t=9056)
+ * [My own problems with compiling and running Box2D](http://www.box2d.org/forum/viewtopic.php?f=7&t=9056)
 
 ### Artemis
 
