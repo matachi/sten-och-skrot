@@ -2,6 +2,14 @@
 
 Author: Daniel "MaTachi" Jonsson
 
+## Clone project
+
+Since Artemis is included as a submodule, cloning my project requires:
+
+ 1. `git clone https://github.com/MaTachi/sten-och-skrot.git`
+ 2. `git submodule init`
+ 3. `git submodule update`
+
 ## Set up
 
 Below are some things you need to have installed/set up before you are able
@@ -24,6 +32,8 @@ to compile my project.
 ### Artemis
 
  * [C++ port of Artemis](https://github.com/vinova/Artemis-Cpp)
+
+Note, already included as a [git submodule](http://git-scm.com/book/en/Git-Tools-Submodules).
 
 ## Compile project
 
