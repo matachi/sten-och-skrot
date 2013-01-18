@@ -37,4 +37,14 @@ Note, already included as a [git submodule](http://git-scm.com/book/en/Git-Tools
 
 ## Compile project
 
+### Method 1 - CMake
+
+ 1. `mkdir build`
+ 2. `cd build`
+ 3. `cmake ..`
+ 4. `make`
+ 5. `./Main`
+
+### Method 2
+
     rm a.out ; g++ main.cc entity_factory.cc components/*.cc systems/*.cc Artemis-Cpp/*.cpp `pkg-config --libs --static allegro-static-5.0 allegro_image-static-5.0` -lBox2D -L/usr/local/lib -I/usr/local/include ; ./a.out

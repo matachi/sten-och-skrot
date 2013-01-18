@@ -2,4 +2,4 @@
 *.swp
 *.gch
 a.out
-bin/
+build/
