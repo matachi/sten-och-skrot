@@ -10,9 +10,11 @@
 #include "components/velocity.h"
 #include "components/position.h"
 #include "components/sprite.h"
+#include "components/body.h"
 #include "systems/MovementSystem.h"
 #include "systems/BorderSystem.h"
 #include "systems/SpriteRenderSystem.h"
+#include "entity_factory.h"
 #include <Box2D/Box2D.h>
 
 int main(int argc, char **argv){
@@ -56,13 +58,61 @@ int main(int argc, char **argv){
   gravity.Set(0.0f, -10.0f);
   m_world = new b2World(gravity);
 
-  b2BodyDef bd;
-  b2Body* ground = m_world->CreateBody(&bd);
+	b2RevoluteJoint* m_joint;
 
-  b2EdgeShape shape;
-  shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-  ground->CreateFixture(&shape, 0.0f);
+  //b2BodyDef bd;
+  //b2Body* ground = m_world->CreateBody(&bd);
 
+  //b2EdgeShape shape;
+  //shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
+  //ground->CreateFixture(&shape, 0.0f);
+
+		b2Body* ground = NULL;
+		{
+			b2BodyDef bd;
+			ground = m_world->CreateBody(&bd);
+		}
+
+		{
+			b2BodyDef bd;
+			bd.type = b2_dynamicBody;
+			bd.allowSleep = false;
+			bd.position.Set(0.0f, 10.0f);
+			b2Body* body = m_world->CreateBody(&bd);
+
+			b2PolygonShape shape;
+			shape.SetAsBox(0.5f, 10.0f, b2Vec2( 10.0f, 0.0f), 0.0);
+			body->CreateFixture(&shape, 5.0f);
+			shape.SetAsBox(0.5f, 10.0f, b2Vec2(-10.0f, 0.0f), 0.0);
+			body->CreateFixture(&shape, 5.0f);
+			shape.SetAsBox(10.0f, 0.5f, b2Vec2(0.0f, 10.0f), 0.0);
+			body->CreateFixture(&shape, 5.0f);
+			shape.SetAsBox(10.0f, 0.5f, b2Vec2(0.0f, -10.0f), 0.0);
+			body->CreateFixture(&shape, 5.0f);
+
+			b2RevoluteJointDef jd;
+			jd.bodyA = ground;
+			jd.bodyB = body;
+			jd.localAnchorA.Set(0.0f, 10.0f);
+			jd.localAnchorB.Set(0.0f, 0.0f);
+			jd.referenceAngle = 0.0f;
+			jd.motorSpeed = 0.05f * b2_pi;
+			jd.maxMotorTorque = 1e8f;
+			jd.enableMotor = true;
+			m_joint = (b2RevoluteJoint*)m_world->CreateJoint(&jd);
+		}
+
+			//b2BodyDef bd;
+			//bd.type = b2_dynamicBody;
+			//bd.position.Set(0.0f, 10.0f);
+			//b2Body* body = m_world->CreateBody(&bd);
+
+			//b2PolygonShape shape;
+			//shape.SetAsBox(0.125f, 0.125f);
+			//body->CreateFixture(&shape, 1.0f);
+
+  EntityFactory::init(&world, m_world);
+  artemis::Entity* box = EntityFactory::createBox();
 
   artemis::Entity **array = (artemis::Entity**)(malloc(STARS * sizeof(artemis::Entity)));
   for (int i = 0; i < STARS; ++i) {
@@ -83,14 +133,25 @@ int main(int argc, char **argv){
 
   int counter = 0;
 
+  al_init_image_addon();
+  ALLEGRO_BITMAP *bitmap = al_load_bitmap("image.png");
+
   while(true){
     ++counter;
+    Body *body = (Body*)box->getComponent<Body>();
 
-    world.loopStart();
-    world.setDelta(1/60.0f);
-    movementsys->process();
-    bordersys->process();
-    spriterendersys->process();
+    m_world->Step(1/60.0f, 8, 2);
+		b2Vec2 position = body->getBody()->GetPosition();
+		float32 angle = body->getBody()->GetAngle();
+
+		printf("%d %4.2f %4.2f %4.2f\n", counter, position.x, position.y, angle);
+    al_draw_scaled_bitmap(bitmap, 0, 0, 10, 10, position.x, -position.y, 100, 100, 0);
+
+    //world.loopStart();
+    //world.setDelta(1/60.0f);
+    //movementsys->process();
+    //bordersys->process();
+    //spriterendersys->process();
 
     //al_clear_to_color(al_map_rgb(0,0,0));
     //al_lock_bitmap(al_get_backbuffer(display), ALLEGRO_PIXEL_FORMAT_ANY, 0);

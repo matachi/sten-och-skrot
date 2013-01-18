@@ -37,4 +37,4 @@ Note, already included as a [git submodule](http://git-scm.com/book/en/Git-Tools
 
 ## Compile project
 
-    rm a.out ; g++ -Wall main.cc components/*.cc systems/*.cc Artemis-Cpp/*.cpp `pkg-config --libs --static allegro-static-5.0 allegro_image-static-5.0` -lBox2D -L/usr/local/lib -I/usr/local/include ; ./a.out
+    rm a.out ; g++ main.cc entity_factory.cc components/*.cc systems/*.cc Artemis-Cpp/*.cpp `pkg-config --libs --static allegro-static-5.0 allegro_image-static-5.0` -lBox2D -L/usr/local/lib -I/usr/local/include ; ./a.out
