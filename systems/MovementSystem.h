@@ -1,5 +1,5 @@
-#include "../Artemis-Cpp/EntityProcessingSystem.h"
-#include "../Artemis-Cpp/ComponentMapper.h"
+#include <Artemis-Cpp/EntityProcessingSystem.h>
+#include <Artemis-Cpp/ComponentMapper.h>
 #include "../components/velocity.h"
 #include "../components/position.h"
 

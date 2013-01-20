@@ -1,4 +1,4 @@
-#include "../Artemis-Cpp/Component.h"
+#include <Artemis-Cpp/Component.h>
 
 #ifndef COMPONENTS_VELOCITY_H_
 #define COMPONENTS_VELOCITY_H_

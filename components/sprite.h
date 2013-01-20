@@ -1,4 +1,4 @@
-#include "../Artemis-Cpp/Component.h"
+#include <Artemis-Cpp/Component.h>
 #include <string>
 
 #ifndef COMPONENTS_SPRITE_H_

@@ -19,6 +19,8 @@ ExternalProject_Add(Box2D
     CMAKE_ARGS ${box2d_CMAKE_ARGS}
 )
 
+include_directories("${CMAKE_CURRENT_BINARY_DIR}/box2d/include")
+
 ### ALLEGRO
 set(allegro_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/allegro")
 set(allegro_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/allegro")
@@ -31,6 +33,8 @@ ExternalProject_Add(Allegro
     INSTALL_DIR ${allegro_INSTALL_DIR}
     CMAKE_ARGS ${allegro_CMAKE_ARGS}
 )
+
+include_directories("${CMAKE_CURRENT_BINARY_DIR}/allegro/include")
 
 ### ARTEMIS
 include(ExternalProject)
@@ -45,6 +49,8 @@ ExternalProject_Add(Artemis
     INSTALL_DIR ${artemis_INSTALL_DIR}
     CMAKE_ARGS ${artemis_CMAKE_ARGS}
 )
+
+include_directories("${CMAKE_CURRENT_BINARY_DIR}/artemis/include")
 
 file(GLOB components "components/*.cc")
 file(GLOB systems "systems/*.cc")
