@@ -3,19 +3,14 @@ project(Main CXX)
 
 #add_definitions(-g -O2 -fsigned-char -freg-struct-return -Wall -W -Wshadow -Wstrict-prototypes -Wpointer-arith -Wcast-qual -Winline -Werror)
 
-add_subdirectory(Artemis-Cpp)
-#add_subdirectory(allegro-5.0.8)
-#add_subdirectory(Box2D_v2.2.1)
+set(BUILD_SHARED_LIBRARIES OFF)
 
-
+### BOX2D
 include(ExternalProject)
 set(box2d_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/box2d")
 set(box2d_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/box2d")
 set(box2d_DOWNLOAD_DIR "${CMAKE_CURRENT_BINARY_DIR}/box2d/download")
-set(box2d_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${box2d_INSTALL_DIR})
-
-#set(BUILD_SHARED_LIBS ON)
-set(BUILD_SHARED_LIBRARIES OFF)
+set(box2d_CMAKE_ARGS -DBOX2D_BUILD_EXAMPLES=off -DCMAKE_INSTALL_PREFIX=${box2d_INSTALL_DIR})
 
 ExternalProject_Add(Box2D
     PREFIX ${box2d_PREFIX}
@@ -24,11 +19,11 @@ ExternalProject_Add(Box2D
     CMAKE_ARGS ${box2d_CMAKE_ARGS}
 )
 
+### ALLEGRO
 set(allegro_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/allegro")
 set(allegro_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/allegro")
 set(allegro_DOWNLOAD_DIR "${CMAKE_CURRENT_BINARY_DIR}/allegro/download")
-set(allegro_CMAKE_ARGS -DSHARED=off -DCMAKE_INSTALL_PREFIX=${allegro_INSTALL_DIR})
-#set(allegro_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${allegro_INSTALL_DIR})
+set(allegro_CMAKE_ARGS -DSHARED=off -DWANT_DEMO=off -DWANT_EXAMPLES=off -DWANT_DOCS=off -DWANT_DOCS_DOCS_HTML=off -DWANT_DOCS_MAN=off -DCMAKE_INSTALL_PREFIX=${allegro_INSTALL_DIR})
 
 ExternalProject_Add(Allegro
     PREFIX ${allegro_PREFIX}
@@ -37,32 +32,26 @@ ExternalProject_Add(Allegro
     CMAKE_ARGS ${allegro_CMAKE_ARGS}
 )
 
-# TODO: Add Artemis as ExternalProject
-#include(ExternalProject)
-#set(artemis_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/artemis")
-#set(artemis_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/artemis")
-#set(artemis_DOWNLOAD_DIR "${CMAKE_CURRENT_BINARY_DIR}/artemis/download")
-#set(artemis_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${artemis_INSTALL_DIR})
-#
-#ExternalProject_Add(Artemis
-#    PREFIX ${artemis_PREFIX}
-#    GIT_REPOSITORY git://github.com/MaTachi/sten-och-skrot.git
-#    INSTALL_DIR ${artemis_INSTALL_DIR}
-#    CMAKE_ARGS ${artemis_CMAKE_ARGS}
-#)
+### ARTEMIS
+include(ExternalProject)
+set(artemis_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/artemis")
+set(artemis_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/artemis")
+set(artemis_DOWNLOAD_DIR "${CMAKE_CURRENT_BINARY_DIR}/artemis/download")
+set(artemis_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${artemis_INSTALL_DIR})
 
-# TODO: Needed?
-#link_directories(${box2d_INSTALL_DIR})
-#add_subdirectory(${box2d_INSTALL_DIR})
+ExternalProject_Add(Artemis
+    PREFIX ${artemis_PREFIX}
+    GIT_REPOSITORY git://github.com/MaTachi/Artemis-Cpp.git
+    INSTALL_DIR ${artemis_INSTALL_DIR}
+    CMAKE_ARGS ${artemis_CMAKE_ARGS}
+)
 
 file(GLOB components "components/*.cc")
 file(GLOB systems "systems/*.cc")
 set(files ${components} ${systems})
 add_executable(Main main.cc entity_factory.cc ${files})
 
-#target_link_libraries(Main Artemis ${box2d_PREFIX}/lib/libBox2D.a)
-#target_link_libraries(Main Artemis ${box2d_PREFIX}/lib/libBox2D.a ${allegro_PREFIX}/lib/liballegro.so ${allegro_PREFIX}/lib/liballegro_image.so)
-target_link_libraries(Main Artemis ${box2d_PREFIX}/lib/libBox2D.a ${allegro_PREFIX}/lib/liballegro_image-static.a png z jpeg ${allegro_PREFIX}/lib/liballegro-static.a m pthread SM ICE X11 Xext Xcursor GL GLU Xrandr Xinerama)
+target_link_libraries(Main ${artemis_PREFIX}/lib/libArtemis.a ${box2d_PREFIX}/lib/libBox2D.a ${allegro_PREFIX}/lib/liballegro_image-static.a png z jpeg ${allegro_PREFIX}/lib/liballegro-static.a m pthread SM ICE X11 Xext Xcursor GL GLU Xrandr Xinerama)
 # Why are Xrandr and Xinerama needed?
 
-add_dependencies(Main Artemis Box2D)
+add_dependencies(Main Allegro Artemis Box2D)
