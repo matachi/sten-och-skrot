@@ -1,4 +1,4 @@
-#include "../Artemis-Cpp/Component.h"
+#include <Artemis-Cpp/Component.h>
 
 #ifndef COMPONENTS_POSITION_H_
 #define COMPONENTS_POSITION_H_

@@ -1,5 +1,5 @@
-#include "../Artemis-Cpp/EntityProcessingSystem.h"
-#include "../Artemis-Cpp/ComponentMapper.h"
+#include <Artemis-Cpp/EntityProcessingSystem.h>
+#include <Artemis-Cpp/ComponentMapper.h>
 #include "../components/position.h"
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
